@@ -1,0 +1,177 @@
+                     XML FILE
+                    
+                     List View                    
+                        
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E3B7C6"
+    android:orientation="vertical"
+    tools:context=".LiExp">
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lvdata"
+        android:entries="@array/mysubject">
+
+    </ListView>
+
+</LinearLayout>               
+
+
+                    List Introduction
+                    
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="#352E2E"
+    tools:context=".ListIntroduction">
+
+    <TextView
+        android:id="@+id/txt1"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:textColor="#E53935"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt2"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:textColor="#E53935"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt3"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:textColor="#E53935"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt4"
+        android:gravity="center"
+        android:textSize="25dp"
+        android:textColor="#E53935"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+
+
+
+                     KOTLIN FILE
+                     
+                     
+                     List View
+                     
+package com.example.myfirstapplication
+
+import android.content.Intent
+import android.icu.text.Transliterator
+import android.icu.text.Transliterator.Position
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.ListView
+import android.widget.Toast
+
+class LiExp : AppCompatActivity()
+{
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_li_exp)
+
+        var lv = findViewById<ListView>(R.id.lvdata)
+
+
+        lv.setOnItemClickListener { adapterView, view, i, l ->
+            Toast.makeText(this, ""+lv.getItemAtPosition(i), Toast.LENGTH_SHORT).show()
+           
+            if(i==0)
+            {
+                var i = Intent(this,ListIntroduction::class.java)
+                i.putExtra("c language","C is a general purpose programming language created by Dennis Ritchie at the Bell Laboratories in 1972")
+                startActivity(i)
+            }
+
+            if(i==1)
+            {
+                var i = Intent(this,ListIntroduction::class.java)
+                i.putExtra("C++ language","C++ is a cross platform language that can be used to create high performance applications")
+                startActivity(i)
+            }
+
+            if(i==2)
+            {
+                var i = Intent(this,ListIntroduction::class.java)
+                i.putExtra("java","Java is an object-oriented programming language developed by Sun Microsystem and it was released in 1995")
+                startActivity(i)
+
+            }
+
+            if(i==3)
+            {
+                var i = Intent(this,ListIntroduction::class.java)
+                i.putExtra("python","Python is a popular programming language. it was created by Guido van rossum and released in 1991")
+                startActivity(i)
+            }
+
+        }
+        
+    }
+}                                              
+
+
+
+                      List Introduction
+                      
+package com.example.myfirstapplication
+
+import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.TextView
+
+class ListIntroduction : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_list_introduction)
+
+        var t1 = findViewById<TextView>(R.id.txt1)
+        var t2 = findViewById<TextView>(R.id.txt2)
+        var t3 = findViewById<TextView>(R.id.txt3)
+        var t4 = findViewById<TextView>(R.id.txt4)
+
+
+        var j = intent
+        var fetchText = j.getStringExtra("c language")
+        t1.text = fetchText
+
+        var k = intent
+        var fetchText1 = j.getStringExtra("C++ language")
+        t2.text = fetchText1
+
+        var m = intent
+        var fetchText2 = j.getStringExtra("java")
+        t3.text = fetchText2
+
+        var n = intent
+        var fetchText3 = j.getStringExtra("python")
+        t4.text = fetchText3
+    }
+}                      

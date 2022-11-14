@@ -1,0 +1,71 @@
+                    XML FILE
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SpExp">
+
+    <Spinner
+        android:layout_margin="26dp"
+        android:entries="@array/mysubject"
+        android:id="@+id/spdata"
+        android:padding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </Spinner>
+
+</LinearLayout>
+
+
+
+                   STRING XML FILE
+                   
+<string-array name="mysubject">
+        <item>C</item>
+        <item>C++</item>
+        <item>Java</item>
+        <item>Python</item>
+    </string-array>               
+    
+ 
+    
+                   KOTLIN FILE
+                   
+package com.example.myfirstapplication
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.Spinner
+import android.widget.Toast
+
+class SpExp : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_sp_exp)
+
+        var sp = findViewById<Spinner>(R.id.spdata)
+
+        sp.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                Log.d("my data","selected item "+sp.getItemAtPosition(p2))
+                if (sp.getItemAtPosition(p2).equals("Python"))
+                {
+                    Toast.makeText(this@SpExp, "SELECTED : PYTHON", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+        }
+    }
+}                       

@@ -1,0 +1,81 @@
+                            XML FILE
+                            
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ChkExp">
+
+    <CheckBox
+        android:id="@+id/chk_play"
+        android:text="Play"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <CheckBox
+        android:id="@+id/chk_read"
+        android:text="Read"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <CheckBox
+        android:id="@+id/chk_dance"
+        android:text="Dance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btnsubmit"
+        android:text="SUBMIT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+</LinearLayout>
+
+
+
+                      KOTLIN FILE
+                      
+package com.example.myfirstapplication
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.CheckBox
+import android.widget.CompoundButton
+import android.widget.Toast
+
+class ChkExp : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_chk_exp)
+
+        var chkplay = findViewById<CheckBox>(R.id.chk_play)
+        var chkread = findViewById<CheckBox>(R.id.chk_read)
+        var chkdance = findViewById<CheckBox>(R.id.chk_dance)
+
+        chkplay.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+            if(b)
+            {
+                Toast.makeText(this, "play", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        chkread.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+            if (b)
+            {
+                Toast.makeText(this, "Read", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        chkdance.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { compoundButton, b ->
+            if (b)
+            {
+                Toast.makeText(this, "Dance", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+}                                                  

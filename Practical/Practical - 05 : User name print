@@ -1,0 +1,68 @@
+                   XML FILE
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/try_containar"
+    tools:context=".UserName">
+
+    <EditText
+        android:layout_margin="21dp"
+        android:id="@+id/its_username"
+        android:hint="Enter Username"
+        android:padding="21dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_margin="21dp"
+        android:text="SEND"
+        android:id="@+id/btnsend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:textAlignment="center"
+        android:id="@+id/tv_display"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
+
+
+                   KOTLIN FILE
+                   
+                   
+package com.example.myfirstapplication
+
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.*
+import androidx.annotation.RequiresApi
+
+class UserName : AppCompatActivity() {
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_user_name)
+
+        var edname = findViewById<EditText>(R.id.its_username)
+        var btn = findViewById<Button>(R.id.btnsend)
+        var tvname = findViewById<TextView>(R.id.tv_display)
+        var maincontainar = findViewById<LinearLayout>(R.id.try_containar)
+
+        //maincontainar.setBackgroundColor(getColor(R.color.))
+
+        btn.setOnClickListener {
+            Toast.makeText(this,"Welcome"+edname.text.toString(), Toast.LENGTH_SHORT).show()
+            tvname.text = edname.text.toString()
+            edname.text.clear()
+        }
+    }
+}                   

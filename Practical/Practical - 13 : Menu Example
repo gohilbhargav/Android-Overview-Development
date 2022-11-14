@@ -1,0 +1,64 @@
+                XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MenuExp">
+    
+</LinearLayout>
+
+
+               MYMENU XML FILE
+               
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:title="setting"
+        android:id="@+id/op_setting"
+        />
+    <item android:title="profile"
+        android:id="@+id/op_profile"
+        />
+    <item android:title="search"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_search"
+        />
+</menu>
+
+
+                KOTLIN FILE
+                
+package com.example.myfirstapplication
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.widget.Toast
+
+class MenuExp : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_menu_exp)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean
+    {
+        menuInflater.inflate(R.menu.mymenu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    {
+        if (item.itemId==R.id.op_profile)
+        {
+            Toast.makeText(this, "profile screen", Toast.LENGTH_SHORT).show()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+}                               

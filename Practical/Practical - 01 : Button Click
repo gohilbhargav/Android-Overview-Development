@@ -1,0 +1,58 @@
+                    XML FILE
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:background="#552929"
+        android:textSize="36sp"
+        android:textAlignment="center"
+        android:textColor="#DF4040"
+        android:text="My Android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </TextView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn"
+        android:textSize="30dp"
+        android:textColor="#FFEFEF"
+        android:background="#DC4545"
+        android:text="Click Here"
+        >
+    </androidx.appcompat.widget.AppCompatButton>
+
+</LinearLayout>
+
+
+                  KOTLIN FILE
+                  
+                  
+package com.example.myfirstapplication
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Button
+import android.widget.Toast
+
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        var btn = findViewById<Button>(R.id.btn)
+
+        btn.setOnClickListener {
+            Toast.makeText(this,"Click Here",Toast.LENGTH_SHORT).show()
+        }
+    }
+}                  
