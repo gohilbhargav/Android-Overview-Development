@@ -1,0 +1,108 @@
+               XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/back_color"
+    tools:context=".Task_2_Click_Button_to_Change_Backgroundcolor"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btn_choose_color"
+        android:layout_margin="20dp"
+        android:text="CHOOSE COLOR"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+
+
+           Custom Color XML FILE
+           
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:orientation="vertical"
+    android:background="#03A9F4"
+    android:layout_height="200dp">
+
+    <Button
+        android:text="RED"
+        android:id="@+id/btn_red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:text="BLUE"
+        android:id="@+id/btn_blue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:text="GREEN"
+        android:id="@+id/btn_green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>     
+
+
+               KOTLIN FILE
+               
+package com.example.myfirstapplication
+
+import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Color
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.Window
+import android.widget.Button
+import android.widget.LinearLayout
+
+class Task_2_Click_Button_to_Change_Backgroundcolor : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_task2_click_button_to_change_backgroundcolor)
+
+
+        var btncolor = findViewById<Button>(R.id.btn_choose_color)
+        var layout = findViewById<LinearLayout>(R.id.back_color)
+
+
+        btncolor.setOnClickListener {
+            val dialog = Dialog(this@Task_2_Click_Button_to_Change_Backgroundcolor)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.my_color)
+
+            dialog.setCancelable(false)
+
+            var btnred =dialog.findViewById<Button>(R.id.btn_red)
+            var btnblue =dialog.findViewById<Button>(R.id.btn_blue)
+            var btngreen =dialog.findViewById<Button>(R.id.btn_green)
+
+            btnred.setOnClickListener {
+                layout.setBackgroundColor(Color.RED)
+                dialog.dismiss()
+            }
+
+            btnblue.setOnClickListener {
+                layout.setBackgroundColor(Color.BLUE)
+                dialog.dismiss()
+            }
+
+            btngreen.setOnClickListener {
+                layout.setBackgroundColor(Color.GREEN)
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+    }
+}                     
+           
