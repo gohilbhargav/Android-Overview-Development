@@ -1,0 +1,67 @@
+              XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ContextMenuActivity">
+
+    <TextView
+        android:id="@+id/tv_display_name"
+        android:textSize="20dp"
+        android:text="Display name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+
+
+             KOTLIN FILE
+             
+package com.example.myfirstapplication
+
+import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.ContextMenu
+import android.view.MenuItem
+import android.view.View
+import android.widget.TextView
+import android.widget.Toast
+
+class ContextMenuActivity : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_context_menu)
+
+        var tv = findViewById<TextView>(R.id.tv_display_name)
+
+        registerForContextMenu(tv)
+    }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menuInflater.inflate(R.menu.mymenu,menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean
+    {
+        if(item.itemId==R.id.op_profile)
+        {
+            Toast.makeText(this@ContextMenuActivity, "Profile", Toast.LENGTH_SHORT).show()
+        }
+        else if(item.itemId==R.id.op_setting)
+        {
+            Toast.makeText(this@ContextMenuActivity, "Setting", Toast.LENGTH_SHORT).show()
+        }
+        return super.onContextItemSelected(item)
+    }
+}             

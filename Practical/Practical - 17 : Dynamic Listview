@@ -1,0 +1,73 @@
+             XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DynamicListView">
+
+    <EditText
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        android:id="@+id/ed_entry"
+        android:hint="Entry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:text="Submit Data"
+        android:id="@+id/btn_submit_lvdata"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ListView
+        android:id="@+id/lv_displaydetails"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
+
+
+             KOTLIN FILE
+             
+package com.example.myfirstapplication
+
+import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ListView
+
+class DynamicListView : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
+
+    var myarryList:ArrayList<String> = ArrayList()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_dynamic_list_view)
+
+        var ed = findViewById<EditText>(R.id.ed_entry)
+        var btn =findViewById<Button>(R.id.btn_submit_lvdata)
+        var lv = findViewById<ListView>(R.id.lv_displaydetails)
+
+        btn.setOnClickListener {
+            myarryList.add(ed.text.toString())
+            ed.text.clear()
+            var myadapter = ArrayAdapter(this@DynamicListView,android.R.layout.simple_list_item_1,myarryList)
+            lv.adapter = myadapter
+        }
+
+        lv.setOnItemClickListener { adapterView, view, i, l ->
+            myarryList.remove(lv.getItemAtPosition(i))
+            var myadapter = ArrayAdapter(this@DynamicListView,android.R.layout.simple_list_item_1,myarryList)
+            lv.adapter = myadapter
+
+            myadapter.notifyDataSetChanged()
+        }
+    }
+}             

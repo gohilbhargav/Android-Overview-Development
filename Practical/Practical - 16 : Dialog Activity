@@ -1,0 +1,183 @@
+                   XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Dialog_Example_Activity">
+
+    <Button
+        android:id="@+id/btnalert"
+        android:layout_margin="20dp"
+        android:text="ALERT"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_datepicker"
+        android:layout_margin="20dp"
+        android:text="DATE PICKER"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_timepicker"
+        android:layout_margin="20dp"
+        android:text="TIME PICKER"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_custom_dialog"
+        android:layout_margin="20dp"
+        android:text="CUSTOM DIALOG"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:textSize="26dp"
+        android:id="@+id/tv_display_text_from_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+
+
+                 KOTLIN FILE
+                 
+package com.example.myfirstapplication
+
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
+import android.app.Dialog
+import android.app.TimePickerDialog
+import android.content.DialogInterface
+import android.icu.util.Calendar
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.Window
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+
+class Dialog_Example_Activity : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_dialog_example)
+
+        var btn = findViewById<Button>(R.id.btnalert)
+
+        var datepicker = findViewById<Button>(R.id.btn_datepicker)
+
+        var timePicker = findViewById<Button>(R.id.btn_timepicker)
+
+        var custom_dialog = findViewById<Button>(R.id.btn_custom_dialog)
+
+        var tv_display_text_from_dialog = findViewById<TextView>(R.id.tv_display_text_from_dialog)
+
+        custom_dialog.setOnClickListener {
+            val dialog = Dialog(this@Dialog_Example_Activity)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.mycustom_dialog)
+
+            dialog.setCancelable(false)
+
+            var ed = dialog.findViewById<EditText>(R.id.ed_name)
+            var btnsubmit = dialog.findViewById<Button>(R.id.btn_submit)
+
+            btnsubmit.setOnClickListener {
+                tv_display_text_from_dialog.setText(ed.text.toString())
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+
+
+
+        var c = Calendar.getInstance()
+        var year = c.get(Calendar.YEAR)
+        var month = 1+ c.get(Calendar.MONTH)
+        var day = c.get(Calendar.DAY_OF_MONTH)
+
+        datepicker.setText("$day - $month - $year")
+
+        datepicker.setOnClickListener {
+
+            var dpd = DatePickerDialog(this@Dialog_Example_Activity,DatePickerDialog.OnDateSetListener { datePicker, i, i2, i3 ->
+                var m = i2 + 1
+                datepicker.setText("$i3 - $m - $i")
+            },year,month,day)
+            dpd.show()
+
+        }
+
+        timePicker.setOnClickListener {
+            var tdp = TimePickerDialog(this@Dialog_Example_Activity,TimePickerDialog.OnTimeSetListener { timePicker, i, i2 ->
+                Toast.makeText(this, "$i : $i2", Toast.LENGTH_SHORT).show()
+            },c.get(Calendar.HOUR_OF_DAY),c.get(Calendar.MONTH),false)
+                .show()
+        }
+
+        btn.setOnClickListener {
+            var alertDialog = AlertDialog.Builder(this@Dialog_Example_Activity)
+                .setTitle("Alert")
+                .setMessage("Are you sure you to exit ? ")
+                .setPositiveButton("yes",DialogInterface.OnClickListener { dialogInterface, i ->
+                    dialogInterface.dismiss()
+                    finish()
+                })
+
+                .setNegativeButton("No",DialogInterface.OnClickListener { dialogInterface, i ->
+                    dialogInterface.dismiss()
+
+                })
+
+                .setNeutralButton("Cancel",DialogInterface.OnClickListener { dialogInterface, i ->
+                    dialogInterface.cancel()
+
+                })
+                .setCancelable(false)
+                .show()
+        }
+
+        override fun onBackPressed(){
+            // super.onBackPressed()
+            var alertDialog = AlertDialog.Builder(this@Dialog_Example_Activity)
+                .setTitle("Alert")
+                .setMessage("Are you sure you to exit ? ")
+                .setPositiveButton("yes",DialogInterface.OnClickListener { dialogInterface, i ->
+                    dialogInterface.dismiss()
+                    finish()
+                })
+
+                .setNegativeButton("No",DialogInterface.OnClickListener { dialogInterface, i ->
+                    dialogInterface.dismiss()
+
+                })
+
+                .setNeutralButton("Cancel",DialogInterface.OnClickListener { dialogInterface, i ->
+                    dialogInterface.cancel()
+
+                })
+                .setCancelable(false)
+                .show()
+
+            Toast.makeText(this, "on Back press", Toast.LENGTH_SHORT).show()
+        }
+
+    }
+}                 
