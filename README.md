@@ -29,3 +29,19 @@ store such as Google Play Store and Apple Store
 
 4) Mobile apps are comparatively faster than web
 applications.
+
+
+Web application :
+
+1) Web Apps are accessed via the internet
+browser and will function according to the
+device you’re viewing them on
+
+2) Web apps are not native to a particular system
+and there is no need to be downloaded or
+installed.
+
+3) In order to run web apps need an active
+internet connection.
+
+4) Web applications are comparatively slower.
