@@ -63,57 +63,57 @@
    
    Activity Lifecycle is controlled by 7 methods of android .
    
-   Method              Description
+   No.    Method              Description
 
-   onCreate()          called when activity is first created.
+   1)     onCreate()          called when activity is first created.
 
-   onStart()           called when activity is becoming visible to the user.
+   2)     onStart()           called when activity is becoming visible to the user.
 
-   onResume()          called when activity will start interacting with the user.
+   3)     onResume()          called when activity will start interacting with the user.
 
-   onPause()           called when activity is not visible to the user.
+   4)     onPause()           called when activity is not visible to the user.
 
-   onStop()            called when activity is no longer visible to the user.
+   5)     onStop()            called when activity is no longer visible to the user.
 
-   onRestart()         called after your activity is stopped, prior to start.
+   6)     onRestart()         called after your activity is stopped, prior to start.
 
-   onDestroy()         called before the activity is destroyed.
+   7)     onDestroy()         called before the activity is destroyed.
 
    
    Activity LifeCycle
 
-   ->  onCreate()
-   ->  onStar()
-   ->  onResume()
-   ->  onPause()
-   ->  onStop()
-   ->  onDestroy()
-   ->  onRestar()
+   1)  onCreate()
+   2)  onStar()
+   3)  onResume()
+   4)  onPause()
+   5)  onStop()
+   6)  onDestroy()
+   7)  onRestar()
  
    ================================
  
    when application - activity launch :
  
-   onCreate()
-   onStar()
-   onResume()
+   1) onCreate()
+   2) onStar()
+   3) onResume()
      
    home button :
 
-   onPause()
-   onStop()
+   1) onPause()
+   2) onStop()
          
    re - open application from backend : 
 
-   onRestart()
-   onStart()
-   onResume()
+   1) onRestart()
+   2) onStart()
+   3) onResume()
      
    when back button press :
 
-   onPause()
-   onStop()
-   onDestroy()       
+   1) onPause()
+   2) onStop()
+   3) onDestroy()       
    
 6) What is fragment and fragment to activity
 
