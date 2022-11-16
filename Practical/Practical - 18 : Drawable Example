@@ -1,0 +1,116 @@
+               XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/mybg"
+    tools:context=".Drawable_Example">
+
+    <FrameLayout
+        android:layout_marginTop="100dp"
+        android:layout_width="match_parent"
+        android:layout_height="500dp">
+
+        <View
+            android:layout_margin="20dp"
+            android:background="#A89696"
+            android:alpha="0.2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </View>
+
+        <TextView
+            android:layout_marginTop="50dp"
+            android:textSize="56dp"
+            android:textAlignment="center"
+            android:textColor="#011B1E"
+            android:textStyle="bold"
+            android:fontFamily="cursive"
+            android:text="Login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:padding="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="150dp"
+            android:drawableLeft="@drawable/ic_baseline_email_24"
+            android:drawablePadding="10dp"
+            android:hint="E-mail"
+            android:textSize="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:padding="10dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="220dp"
+            android:drawableLeft="@drawable/ic_baseline_lock_24"
+            android:drawablePadding="10dp"
+            android:hint="Password"
+            android:textSize="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:layout_marginTop="280dp"
+            android:hint="SING IN"
+            android:textSize="20dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </FrameLayout>
+
+</LinearLayout>
+
+
+                 My Bg(XML FILE)
+                 
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <gradient
+        android:startColor="#0BF3DD"
+        android:endColor="#03A9F4"
+        android:angle="90"
+        />
+</shape>
+
+
+                My Bg 1(XML FILE)
+                
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid
+        android:color="#ECE1E1"
+        />
+
+    <corners
+        android:topRightRadius="50dp"
+        />
+</shape>
+
+
+               KOTLIN FILE
+               
+package com.example.practical
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+
+class Drawable_Example : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_drawable_example)
+    }
+}                                                
