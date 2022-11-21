@@ -1,0 +1,146 @@
+               XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecyclerView.Recyclerview_Dashboard">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rev_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
+
+
+             My Row Layout(XML)
+             
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="20dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="20dp"
+    android:layout_height="100dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imview"
+            android:src="@mipmap/ic_launcher"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:text="ANDROID"
+            android:textStyle="bold"
+            android:textSize="50dp"
+            android:id="@+id/tv_row_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+
+
+             KOTLIN FILE
+             
+package com.example.myfirstapplication.RecyclerView
+
+import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myfirstapplication.R
+
+class Recyclerview_Dashboard : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_recyclerview_dashboard)
+
+        //step 2
+
+        var recyclerview = findViewById<RecyclerView>(R.id.rev_view)
+       recyclerview.layoutManager = LinearLayoutManager(this@Recyclerview_Dashboard)
+
+        var myarrayList = ArrayList<MyModel>()
+
+        myarrayList.add(MyModel(R.mipmap.android,"ANDROID"))
+        myarrayList.add(MyModel(R.mipmap.kotlin,"KOTLIN"))
+        myarrayList.add(MyModel(R.mipmap.java,"JAVA"))
+        myarrayList.add(MyModel(R.mipmap.python,"PYTHON"))
+
+        var adapter = MyAdapter(this@Recyclerview_Dashboard,myarrayList)
+        recyclerview.adapter = adapter
+    }
+}
+
+
+            My Adapter(FILE)
+            
+package com.example.myfirstapplication.RecyclerView
+
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.example.myfirstapplication.R
+
+//  step 5
+
+//class MyAdapter(var context:Context,var arrayList:ArrayList<MyModel>)
+//{
+  //  class MyClass(itemview: View):RecyclerView.ViewHolder(itemview)
+    //{
+
+    //}
+//}
+
+                                                                       // step 6 : extend Recyclerview.Adapter
+class MyAdapter(var context:Context,var arrayList:ArrayList<MyModel>):RecyclerView.Adapter<MyAdapter.MyClass>()
+{
+    class MyClass(itemview: View):RecyclerView.ViewHolder(itemview)
+    {
+        var imageView = itemView.findViewById<ImageView>(R.id.imview)
+        var tvview = itemview.findViewById<TextView>(R.id.tv_row_view)
+
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyClass {
+        var view = LayoutInflater.from(parent.context).inflate(R.layout.my_row_layout,parent,false)
+        return MyClass(view)
+    }
+
+    override fun onBindViewHolder(holder: MyClass, position: Int) {
+
+        var myModel = arrayList[position]
+
+        holder.tvview.text = myModel.name
+        holder.imageView.setImageResource(myModel.image)
+    }
+
+    override fun getItemCount(): Int {
+        return arrayList.size
+    }
+}                                      
+
+
+                My Model(FILE)
+                
+package com.example.myfirstapplication.RecyclerView
+
+//stepn: 4
+data class MyModel(var image:Int,var name :String)                
