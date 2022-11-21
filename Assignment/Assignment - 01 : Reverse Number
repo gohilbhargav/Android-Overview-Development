@@ -1,0 +1,55 @@
+                XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.practical.Assignment_1_Reverse_number">
+
+    <EditText
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        android:id="@+id/ed_input"
+        android:hint="Enter Number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txt_reversenumber"
+        android:padding="20dp"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
+
+
+              KOTLIN FILE
+              
+package com.example.practical
+
+import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+
+class Assignment_1_Reverse_number : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_assignment1_reverse_number)
+
+        var ed = findViewById<EditText>(R.id.ed_input)
+        var txt = findViewById<TextView>(R.id.txt_reversenumber)
+
+        ed.setOnClickListener {
+            val stringReverse_number = ed.text.toString().reversed()
+            txt.text = stringReverse_number
+        }
+    }
+}

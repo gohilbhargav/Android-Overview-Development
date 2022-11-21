@@ -1,0 +1,143 @@
+                 XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Assignment_4_add_textview_in_tablelayout_programmatically">
+
+    <TableRow
+        android:background="@android:color/holo_green_light"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/txtRoll"
+            android:textStyle="bold"
+            android:text="Roll"
+            android:textSize="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/txtName"
+            android:textStyle="bold"
+            android:text="Name"
+            android:textSize="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/txtCity"
+            android:textStyle="bold"
+            android:text="City"
+            android:textSize="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/txtRoll1"
+            android:text="textViw"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/txtName1"
+            android:text="textViw"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/txtCity1"
+            android:text="textViw"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/txtRoll2"
+            android:text="textViw"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/txtName2"
+            android:text="textViw"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/txtCity2"
+            android:text="textViw"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </TableRow>
+
+</TableLayout>
+
+
+                 KOTLIN FILE
+                 
+package com.example.practical
+
+import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.TextView
+
+class Assignment_4_add_textview_in_tablelayout_programmatically : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_assignment4_add_textview_in_tablelayout_programmatically)
+
+        var c1 = findViewById<TextView>(R.id.txtRoll1)
+        var c2 = findViewById<TextView>(R.id.txtName1)
+        var c3 = findViewById<TextView>(R.id.txtCity1)
+        var c4 = findViewById<TextView>(R.id.txtRoll2)
+        var c5 = findViewById<TextView>(R.id.txtName2)
+        var c6 = findViewById<TextView>(R.id.txtCity2)
+
+        var roll = mutableListOf<Int>(1,2)
+        var name = mutableListOf<String>("ROHIT","KOHLI")
+        var city = mutableListOf<String>("AHMEDABAD","RAJKOT")
+
+        c1.text = roll.get(0).toString()
+        c2.text = name.get(0).toString()
+        c3.text = city.get(0).toString()
+        c4.text = roll.get(1).toString()
+        c5.text = name.get(1).toString()
+        c6.text = city.get(1).toString()
+
+
+    }
+}                 
