@@ -1,0 +1,59 @@
+                XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WebViewPractical">
+
+    <WebView
+        android:id="@+id/btn_web_view"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
+
+
+               KOTLIN FILE
+               
+package com.example.practical
+
+import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.webkit.WebView
+import android.webkit.WebViewClient
+
+class WebViewPractical : AppCompatActivity() {
+    lateinit var webview: WebView
+
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_web_view_practical)
+
+        webview = findViewById<WebView>(R.id.btn_web_view)
+
+        webview.webViewClient = WebViewClient()
+        webview.loadUrl("https://www.gamil.com")
+
+        webview.settings.javaScriptEnabled = true
+
+        webview.settings.setSupportZoom(true)
+    }
+
+    override fun onBackPressed()
+    {
+        if (webview.canGoBack())
+        {
+            webview.goBack()
+        }
+        else
+        {
+            super.onBackPressed()
+        }
+    }
+}               
