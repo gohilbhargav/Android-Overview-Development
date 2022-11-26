@@ -1,0 +1,137 @@
+                XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.practical.RecyclerviewAndroidGridView.Recyclerview_GridView">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rev_view_grid_view"
+        android:layout_margin="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</FrameLayout>
+
+
+            My Row Grid Layout(XML)   
+            
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="100dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imview_grid"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"/>
+
+        <TextView
+            android:id="@+id/tv_text_grid"
+            android:text="GRID"
+            android:textSize="30dp"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+
+
+                   KOTLIN FILE
+                   
+package com.example.practical.RecyclerviewAndroidGridView
+
+import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+//import com.example.myfirstapplication.R
+//import com.example.myfirstapplication.RecyclerView.MyAdapter
+import com.example.practical.R
+
+class Recyclerview_GridView : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_recyclerview_grid_view)
+
+        var rec_grid = findViewById<RecyclerView>(R.id.rev_view_grid_view)
+
+        rec_grid.layoutManager = GridLayoutManager(this@Recyclerview_GridView,2)
+
+        var myarrayList = ArrayList<MyModelGrid>()
+
+        myarrayList.add(MyModelGrid(R.mipmap.ic_launcher,"ANDROID"))
+        myarrayList.add(MyModelGrid(R.mipmap.ic_launcher,"KOTLIN"))
+        myarrayList.add(MyModelGrid(R.mipmap.ic_launcher,"JAVA"))
+        myarrayList.add(MyModelGrid(R.mipmap.ic_launcher,"PYTHON"))
+
+        var adapter = MyAdapterGridView(this@Recyclerview_GridView,myarrayList)
+        rec_grid.adapter = adapter
+    }
+}
+
+
+                  My Adapter GridView(KOTLIN)
+                  
+package com.example.practical.RecyclerviewAndroidGridView
+
+import android.content.Context
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+//import com.example.myfirstapplication.R
+import com.example.practical.R
+
+class MyAdapterGridView(var context: Context,var dataList:ArrayList<MyModelGrid>):RecyclerView.Adapter<MyAdapterGridView.Myclass>()
+{
+    class Myclass(itemview:View):RecyclerView.ViewHolder(itemview)
+    {
+        var im = itemview.findViewById<ImageView>(R.id.imview_grid)
+        var tv = itemview.findViewById<TextView>(R.id.tv_text_grid)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Myclass {
+        var view = LayoutInflater.from(parent.context).inflate(R.layout.my_grid_row_layout,parent,false)
+        return Myclass(view)
+    }
+
+    override fun onBindViewHolder(holder: Myclass, position: Int) {
+        var myModelGrid = dataList[position]
+
+        holder.tv.setText(myModelGrid.name)
+        holder.im.setImageResource(myModelGrid.image)
+
+        holder.itemView.setOnClickListener {
+            Log.d("my data","holder"+myModelGrid)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return dataList.size
+    }
+}
+
+
+               My Model Grid(KOTLIN)
+               
+package com.example.practical.RecyclerviewAndroidGridView
+
+data class MyModelGrid (var image:Int,var name:String)
+                                                                

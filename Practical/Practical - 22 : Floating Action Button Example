@@ -1,0 +1,47 @@
+                  XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FloatingActionButtonExample">
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:layout_margin="26dp"
+        android:id="@+id/fab"
+        />
+
+</FrameLayout>
+
+
+                 KOTLIN FILE
+                 
+package com.example.practical
+
+import android.annotation.SuppressLint
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+
+class FloatingActionButtonExample : AppCompatActivity() {
+
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_floating_action_button_example)
+
+        var fab = findViewById<FloatingActionButton>(R.id.fab)
+
+        fab.setOnClickListener {
+            Toast.makeText(this@FloatingActionButtonExample, "Clicked", Toast.LENGTH_SHORT).show()
+        }
+    }
+}                 
