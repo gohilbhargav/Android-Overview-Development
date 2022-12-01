@@ -1,0 +1,70 @@
+                  XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".Assignment_5_FontSize_Increate_Decrease_using_Button">
+
+    <TextView
+        android:layout_marginBottom="50dp"
+        android:text="Hello World"
+        android:gravity="center"
+        android:id="@+id/txt_tv"
+        android:textSize="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_plus"
+        android:hint="+"
+        android:textSize="30dp"
+        android:layout_width="100dp"
+        android:layout_height="60dp"/>
+
+    <Button
+        android:id="@+id/btn_minus"
+        android:hint="-"
+        android:textSize="30dp"
+        android:layout_width="100dp"
+        android:layout_height="60dp"/>
+</LinearLayout>
+
+
+
+                KOTLIN FILE
+                
+package com.example.practical
+
+import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.TypedValue
+import android.widget.Button
+import android.widget.TextView
+
+class Assignment_5_FontSize_Increate_Decrease_using_Button : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_assignment5_font_size_increate_decrease_using_button)
+
+        var txt = findViewById<TextView>(R.id.txt_tv)
+        var plus = findViewById<Button>(R.id.btn_plus)
+        var minus = findViewById<Button>(R.id.btn_minus)
+        var ourFontSize = 14f
+
+        plus.setOnClickListener {
+            ourFontSize += 4f
+            txt.setTextSize(TypedValue.COMPLEX_UNIT_SP,ourFontSize)
+        }
+        minus.setOnClickListener {
+            ourFontSize -= 4f
+            txt.setTextSize(TypedValue.COMPLEX_UNIT_SP,ourFontSize)
+        }
+    }
+}                

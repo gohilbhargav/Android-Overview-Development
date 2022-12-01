@@ -1,0 +1,137 @@
+                    XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Assignment_14_No_Internet_Connection_Display_Message">
+
+    <RelativeLayout
+        android:id="@+id/internetLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="We are connected to the Internet"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/noInternetLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/no_internet_image"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_margin="120dp"
+            android:src="@drawable/noconnected" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/no_internet_heading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/no_internet_image"
+            android:layout_centerHorizontal="true"
+            android:text="No Internet Connection"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/no_internet_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/no_internet_heading"
+            android:layout_centerHorizontal="true"
+            android:layout_marginHorizontal="64dp"
+            android:layout_marginVertical="32dp"
+            android:gravity="center"
+            android:text="Check your Internet Connection and Try Again"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/try_again_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/no_internet_text"
+            android:layout_centerHorizontal="true"
+            android:background="#2196F3"
+            android:paddingHorizontal="32dp"
+            android:text="Try Again"
+            android:textAllCaps="false"
+            app:cornerRadius="16dp" />
+
+    </RelativeLayout>
+</RelativeLayout>
+
+
+                       KOTLIN FILE
+                       
+package com.example.practical
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.Button
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.annotation.VisibleForTesting
+
+class Assignment_14_No_Internet_Connection_Display_Message : AppCompatActivity() {
+    private lateinit var internetLayout : RelativeLayout
+    private lateinit var noInternetLayout : RelativeLayout
+    private lateinit var tryAgainButton: Button
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_assignment14_no_internet_connection_display_message)
+        supportActionBar?.hide()
+
+        internetLayout = findViewById(R.id.internetLayout)
+        noInternetLayout =findViewById(R.id.noInternetLayout)
+        tryAgainButton =findViewById(R.id.try_again_button)
+
+        drawLayout()
+
+        tryAgainButton.setOnClickListener {
+            drawLayout()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private  fun isNetworkAvailable(): Boolean{
+        val cm = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities = cm.getNetworkCapabilities(cm.activeNetwork)
+
+        return (capabilities != null && capabilities.hasCapability(NET_CAPABILITY_INTERNET))
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun drawLayout(){
+        if (isNetworkAvailable())
+        {
+            internetLayout.visibility = VISIBLE
+            noInternetLayout.visibility =GONE
+        }
+        else
+        {
+            noInternetLayout.visibility = VISIBLE
+            internetLayout.visibility = GONE
+        }
+    }
+}                       

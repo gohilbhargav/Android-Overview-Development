@@ -1,0 +1,80 @@
+                       XML FILE
+
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Assignment_13_Internet_Connection_is_available_or_not">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="#2594EC"
+        android:padding="20dp"
+        android:id="@+id/btn_check_internet"
+        android:text="CHECK INTERNET"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+        
+</RelativeLayout>
+
+
+                      KOTLIN FILE
+                
+package com.example.practical
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Button
+import android.widget.Toast
+
+class Assignment_13_Internet_Connection_is_available_or_not : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_assignment13_internet_connection_is_available_or_not)
+
+        var btn = findViewById<Button>(R.id.btn_check_internet)
+
+        btn.setOnClickListener {
+            var a = checkForInternet(applicationContext)
+            if (a==true)
+            {
+                Toast.makeText(this@Assignment_13_Internet_Connection_is_available_or_not, "network available", Toast.LENGTH_SHORT).show()
+            }
+            else
+            {
+                Toast.makeText(this@Assignment_13_Internet_Connection_is_available_or_not, "network not available",
+                Toast.LENGTH_SHORT).show()        
+            }
+        }
+    }
+    private fun checkForInternet(context: Context):Boolean{
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            val network = connectivityManager.activeNetwork ?: return false
+            val activeNetwork =connectivityManager.getNetworkCapabilities(network) ?: return false
+
+            return  when{
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+
+                activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+
+                else -> false
+            }
+        }
+        else
+        {
+            val networkInfo = connectivityManager.activeNetworkInfo ?: return false
+            return networkInfo.isConnected
+        }
+    }
+}                
