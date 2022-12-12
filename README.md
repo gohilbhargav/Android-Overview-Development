@@ -152,5 +152,42 @@
 
 
 
+Navigation Component:
+
+Navigation Component is a suite of libraries, tooling and guidance for in-app
+navigation.
+
+The compnent centralizes all of the navigation information of your appin a
+Navigation graph,providing a robust framework for implementing everything 
+from simple button clicks to complex navigation UI patterns
+
+
+Three Type Of Navigation
+1) Navigation Graph
+2) NavHost
+3) NavController
+
+
+1)Navigation Graph:
+
+Navigation Graph ia a new xml resource type that defines all possible paths a user can take through an app.
+It show visually all the destinations that can be reached from a given destination.
+
+2)NavHost:
+
+The navigation host is an empty container where destinations are swapped in and out as a user
+navigates through your app. A navigation host must derive from NavHost.
+The Navigation components defualt NavHost implementation, NavHostFragmet, handles swapping
+fragment destinations.
+
+
+3)NavController:
+
+NavController manages app navigation whithin a NavHost.
+Apps will generally obtain a controller directly from a host, or by using one of the utility methods on
+the navigation class rather than create a controller directly.
+NavController swapping of destination content in the navHost as users move throughout app. 
+
+
 
 
