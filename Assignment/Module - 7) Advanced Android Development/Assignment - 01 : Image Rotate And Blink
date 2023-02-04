@@ -1,0 +1,122 @@
+                XMl FILE
+                
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imagephoto"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_margin="100dp"
+        android:src="@drawable/star" />
+
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/imagephoto"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:padding="3dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:id="@+id/btnrotate"
+            android:text="Rotate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:padding="3dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:id="@+id/btnblink"
+            android:text="Blink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</RelativeLayout>        
+
+
+                 Rotate Animation(XML)
+                 
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <rotate
+    android:duration="6000"
+    android:fromDegrees="0"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:toDegrees="360" />
+
+    <rotate
+        android:duration="6000"
+        android:fromDegrees="360"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="5000"
+        android:toDegrees="0" />
+
+</set>
+
+
+                Blink Animation(XML)
+                
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <alpha android:fromAlpha="0.0"
+        android:toAlpha="1.0"
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:duration="500"
+        android:repeatMode="reverse"
+        android:repeatCount="infinite"/>
+</set>
+
+
+                KOTLIN FILE
+                
+package com.example.imagerotateandblink
+
+import android.annotation.SuppressLint
+import android.media.Image
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.ImageView
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var imageView: ImageView
+    @SuppressLint("MissingInflatedId", "ResourceType")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        imageView = findViewById(R.id.imagephoto)
+
+        var btnrotate = findViewById<Button>(R.id.btnrotate)
+        var btnblink = findViewById<Button>(R.id.btnblink)
+
+        btnrotate.setOnClickListener {
+           var animation = AnimationUtils.loadAnimation(this@MainActivity,R.anim.rotate)
+            imageView.startAnimation(animation)
+        }
+
+        btnblink.setOnClickListener {
+            var i= AnimationUtils.loadAnimation(this@MainActivity,R.anim.blink)
+            imageView.startAnimation(i)
+        }
+
+    }
+}                                                         

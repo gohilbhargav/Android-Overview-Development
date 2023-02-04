@@ -1,0 +1,117 @@
+             XML FILE
+             
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:background="@drawable/walkingman"
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_margin="100dp"/>
+
+    <LinearLayout
+        android:layout_marginTop="100dp"
+        android:orientation="horizontal"
+        android:layout_below="@id/imageView"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <Button
+        android:padding="3dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:id="@+id/btnstar"
+        android:text="Start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:padding="3dp"
+        android:layout_margin="10dp"
+        android:layout_weight="1"
+        android:id="@+id/btnstop"
+        android:text="Stop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</RelativeLayout>
+
+
+               Walking Man(XML)
+               
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/wlking_man___0"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/wlking_man___1"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/wlking_man___2"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/wlking_man___3"/>
+
+    <item
+        android:duration="100"
+        android:drawable="@drawable/wlking_man___4"/>
+
+
+</animation-list>
+
+
+               KOTLIN FILE
+               
+package com.example.framebyframeanimation
+
+import android.annotation.SuppressLint
+import android.graphics.drawable.AnimationDrawable
+import android.graphics.drawable.Drawable
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.ImageView
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var imageView: ImageView
+    @SuppressLint("MissingInflatedId", "ResourceType")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        imageView = findViewById(R.id.imageView)
+
+        var btnstar = findViewById<Button>(R.id.btnstar)
+        var btnstop = findViewById<Button>(R.id.btnstop)
+
+        btnstar.setOnClickListener {
+            val i = imageView.background as AnimationDrawable
+            i.start()
+        }
+
+        btnstop.setOnClickListener {
+            val i = imageView.background as AnimationDrawable
+            i.stop()
+        }
+
+    }
+}
+
+
+                                           

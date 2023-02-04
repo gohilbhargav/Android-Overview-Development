@@ -1,0 +1,109 @@
+                 XML FILE
+           
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="30dp"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/myImageView"
+        android:src="@drawable/star"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"/>
+
+    <Button
+        android:textSize="23dp"
+        android:id="@+id/btn_zoomIn"
+        android:text="Zoom In"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"/>
+
+    <Button
+        android:textSize="23dp"
+        android:id="@+id/btn_zoomOut"
+        android:text="Zoom Out"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"/>
+
+</LinearLayout>
+
+
+               Zoom In(XML)
+               
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="true">
+
+    <scale
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:duration="1000"
+        android:fromXScale="1"
+        android:fromYScale="1"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:toXScale="2"
+        android:toYScale="2"
+        />
+
+</set>
+
+
+              Zoom Out(XML)
+              
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:fillAfter="true">
+
+    <scale
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:duration="1000"
+        android:fromXScale="1"
+        android:fromYScale="1"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:toXScale="0.5"
+        android:toYScale="0.5"
+        />
+
+</set>
+
+
+               KOTLIN FILE
+               
+package com.example.zoominoutanimation
+
+import android.annotation.SuppressLint
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.animation.AnimationUtils
+import android.widget.Button
+import android.widget.ImageView
+
+class MainActivity : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        var myImage = findViewById<ImageView>(R.id.myImageView)
+
+        var btn_zoom_in = findViewById<Button>(R.id.btn_zoomIn)
+        var btn_zoom_out = findViewById<Button>(R.id.btn_zoomOut)
+
+        btn_zoom_in.setOnClickListener {
+            var i = AnimationUtils.loadAnimation(applicationContext,R.anim.zoom_in)
+            myImage.startAnimation(i)
+        }
+
+        btn_zoom_out.setOnClickListener {
+            var j = AnimationUtils.loadAnimation(applicationContext,R.anim.zoom_out)
+            myImage.startAnimation(j)
+        }
+    }
+}                                                     
