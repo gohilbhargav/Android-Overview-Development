@@ -1,0 +1,390 @@
+                     Dashborad Activity
+                     
+package com.drivekit.demoapp.dashboard.activity
+
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
+import com.drivekit.demoapp.component.FeatureCard
+import com.drivekit.demoapp.dashboard.enum.InfoBannerType
+import com.drivekit.demoapp.dashboard.view.InfoBannerView
+import com.drivekit.demoapp.dashboard.viewmodel.DashboardViewModel
+import com.drivekit.demoapp.drivekit.TripListenerController
+import com.drivekit.demoapp.features.activity.FeatureListActivity
+import com.drivekit.demoapp.settings.activity.SettingsActivity
+import com.drivekit.demoapp.simulator.activity.TripSimulatorActivity
+import com.drivekit.demoapp.utils.getSerializableCompat
+import com.drivekit.drivekitdemoapp.R
+import com.drivequant.drivekit.common.ui.DriveKitUI
+import com.drivequant.drivekit.common.ui.component.triplist.viewModel.HeaderDay
+import com.drivequant.drivekit.permissionsutils.PermissionsUtilsUI
+import com.drivequant.drivekit.ui.DriverDataUI
+import com.drivequant.drivekit.ui.SynthesisCardsViewListener
+import com.drivequant.drivekit.ui.synthesiscards.fragment.DKSynthesisCardViewPagerFragment
+import com.drivequant.drivekit.ui.tripdetail.activity.TripDetailActivity
+import com.drivequant.drivekit.ui.trips.viewmodel.TripListConfigurationType
+import kotlinx.android.synthetic.main.activity_dashboard.*
+
+internal class DashboardActivity : AppCompatActivity() {
+    private lateinit var viewModel: DashboardViewModel
+    private var menu: Menu? = null
+    private lateinit var startStopTripButton: Button
+    private lateinit var tripSimulatorButton: Button
+
+    companion object {
+        fun launchActivity(activity: Activity) {
+            val intent = Intent(activity, DashboardActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            activity.startActivity(intent)
+        }
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+
+        setContentView(R.layout.activity_dashboard)
+        val toolbar = findViewById<Toolbar>(R.id.dk_toolbar)
+        setSupportActionBar(toolbar)
+        title = getString(R.string.dashboard_header)
+        initFeatureCard()
+
+        manageTripDetailRedirection()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkViewModelInitialization()
+        TripListenerController.addSdkStateChangeListener(viewModel.sdkStateChangeListener)
+        showContent()
+    }
+
+    private fun checkViewModelInitialization() {
+        if (!this::viewModel.isInitialized) {
+            viewModel = ViewModelProvider(this)[DashboardViewModel::class.java]
+        }
+    }
+
+    private fun showContent() {
+        initInfoBanners()
+        initSynthesisTripsCard()
+        initLastTripsCard()
+        initStartStopTripButton()
+        initTripSimulatorButton()
+    }
+
+    private fun initInfoBanners() {
+        info_banners.removeAllViews()
+        InfoBannerType.values().forEach {
+            if (it.shouldDisplay(this)) {
+                val view = InfoBannerView(this, it, object : InfoBannerView.InfoBannerListener {
+                    override fun onInfoBannerClicked() {
+                        when (it) {
+                            InfoBannerType.DIAGNOSIS -> PermissionsUtilsUI.startAppDiagnosisActivity(this@DashboardActivity)
+                        }
+                    }
+                })
+                info_banners.addView(view)
+            }
+        }
+    }
+
+    private fun initSynthesisTripsCard() {
+        viewModel.getSynthesisCardsView(object : SynthesisCardsViewListener {
+            override fun onViewLoaded(fragment: DKSynthesisCardViewPagerFragment) {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container_synthesis, fragment)
+                    .commit()
+            }
+        })
+    }
+
+    private fun initLastTripsCard() {
+        DriverDataUI.getLastTripsView(HeaderDay.DISTANCE).let {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.container_last_trips, viewModel.getLastTripsCardsView())
+                .commit()
+        }
+    }
+
+    private fun initFeatureCard() {
+        checkViewModelInitialization()
+        card_features.apply {
+            configureTitle(viewModel.getFeatureCardTitleResId())
+            configureDescription(viewModel.getFeatureCardDescriptionResId())
+            configureActionButton(viewModel.getFeatureCardTextButtonButtonResId(), object : FeatureCard.FeatureCardActionClickListener{
+                override fun onButtonClicked() {
+                    startActivity(Intent(context, FeatureListActivity::class.java))
+                }
+            })
+        }
+    }
+
+    private fun initStartStopTripButton() {
+        button_start_stop_trip.findViewById<Button>(R.id.button_action).apply {
+            setBackgroundColor(DriveKitUI.colors.secondaryColor())
+            startStopTripButton = this
+            startStopTripButton.text = getString(viewModel.getStartStopTripButtonTitleResId())
+            setOnClickListener {
+                viewModel.startStopTrip()
+            }
+        }
+
+        viewModel.sdkStateObserver.observe(this) {
+            startStopTripButton.text = getString(viewModel.getStartStopTripButtonTitleResId())
+        }
+    }
+
+    private fun initTripSimulatorButton() {
+        button_trip_simulator.findViewById<Button>(R.id.button_action).apply {
+            setBackgroundColor(DriveKitUI.colors.secondaryColor())
+            tripSimulatorButton = this
+            tripSimulatorButton.text = getString(R.string.simulate_trip)
+            setOnClickListener {
+                TripSimulatorActivity.launchActivity(this@DashboardActivity)
+            }
+        }
+    }
+
+    private fun manageTripDetailRedirection() {
+        intent?.let {
+            val itinId = intent.getStringExtra(TripDetailActivity.ITINID_EXTRA)
+            val openAdvice = intent.getBooleanExtra(TripDetailActivity.OPEN_ADVICE_EXTRA, false)
+            val tripListConfigurationType = intent.getSerializableCompat(
+                TripDetailActivity.TRIP_LIST_CONFIGURATION_TYPE_EXTRA,
+                TripListConfigurationType::class.java
+            )
+            if (!itinId.isNullOrBlank() && tripListConfigurationType != null) {
+                TripDetailActivity.launchActivity(
+                    this,
+                    itinId,
+                    openAdvice,
+                    tripListConfigurationType
+                )
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        TripListenerController.removeSdkStateChangeListener(viewModel.sdkStateChangeListener)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.dashboard_action_bar_menu, menu)
+        this.menu = menu
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_settings -> {
+                SettingsActivity.launchActivity(this)
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+    }
+}                     
+
+
+
+                          Banner Type
+                          
+package com.drivekit.demoapp.dashboard.enum
+
+import android.content.Context
+import android.graphics.Color
+import com.drivekit.drivekitdemoapp.R
+import com.drivequant.drivekit.common.ui.DriveKitUI
+import com.drivequant.drivekit.permissionsutils.PermissionsUtilsUI
+
+internal enum class InfoBannerType {
+    DIAGNOSIS;
+
+    fun shouldDisplay(context: Context) = when (this) {
+        DIAGNOSIS -> PermissionsUtilsUI.hasError(context)
+    }
+
+    fun getColor() = when (this) {
+        DIAGNOSIS -> Color.WHITE
+    }
+
+    fun getBackgroundColorResId() = when (this) {
+        DIAGNOSIS -> DriveKitUI.colors.warningColor()
+    }
+
+    fun getIconResId() = when (this) {
+        DIAGNOSIS -> R.drawable.dk_perm_utils_diagnosis_system
+    }
+
+    fun getTitleResId() = when (this) {
+        DIAGNOSIS -> R.string.info_banner_diagnosis_title
+    }
+
+    fun displayArrow() = when (this) {
+        DIAGNOSIS -> true
+    }
+}
+
+
+
+                     Banner View
+                     
+package com.drivekit.demoapp.dashboard.view
+
+import android.content.Context
+import android.util.AttributeSet
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import com.drivekit.demoapp.dashboard.enum.InfoBannerType
+import com.drivekit.drivekitdemoapp.R
+import com.drivequant.drivekit.common.ui.extension.normalText
+
+internal class InfoBannerView : LinearLayout {
+
+    private lateinit var view: View
+    private lateinit var icon: ImageView
+    private lateinit var title: TextView
+    private lateinit var arrow: ImageView
+
+    constructor(context: Context, infoBannerType: InfoBannerType, listener: InfoBannerListener? = null) : super(context) {
+        init(context, infoBannerType, listener)
+    }
+
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+
+    interface InfoBannerListener {
+        fun onInfoBannerClicked()
+    }
+
+    private fun init(context: Context, infoBannerType: InfoBannerType, listener: InfoBannerListener? = null) {
+        view = View.inflate(context, R.layout.layout_info_banner_item, null)
+        icon = view.findViewById(R.id.image_view_info_banner_icon)
+        title = view.findViewById(R.id.text_view_info_banner_title)
+        arrow = view.findViewById(R.id.image_view_info_banner_arrow)
+
+        view.apply {
+            setBackgroundColor(infoBannerType.getBackgroundColorResId())
+            setOnClickListener { listener?.onInfoBannerClicked() }
+        }
+        ContextCompat.getDrawable(context, infoBannerType.getIconResId())?.let {
+            it.mutate()
+            DrawableCompat.setTint(it, infoBannerType.getColor())
+            icon.setImageDrawable(it)
+        }
+
+        title.apply {
+            text = context.getString(infoBannerType.getTitleResId())
+            normalText(infoBannerType.getColor())
+        }
+
+        if (infoBannerType.displayArrow()) {
+            ContextCompat.getDrawable(context, R.drawable.dk_common_arrow_forward)?.let {
+                arrow.apply {
+                    it.mutate()
+                    DrawableCompat.setTint(it, infoBannerType.getColor())
+                    setImageDrawable(it)
+                    visibility = View.VISIBLE
+                }
+            } ?: run {
+                visibility = View.GONE
+            }
+        } else {
+            visibility = View.GONE
+        }
+
+        addView(
+            view, ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        )
+    }
+}
+
+ 
+                      DashViewModel
+                      
+package com.drivekit.demoapp.dashboard.viewmodel
+
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.drivekit.demoapp.drivekit.TripListenerController
+import com.drivekit.demoapp.features.enum.FeatureType
+import com.drivekit.drivekitdemoapp.R
+import com.drivequant.drivekit.common.ui.component.triplist.viewModel.HeaderDay
+import com.drivequant.drivekit.tripanalysis.DriveKitTripAnalysis
+import com.drivequant.drivekit.tripanalysis.service.recorder.State
+import com.drivequant.drivekit.ui.DriverDataUI
+import com.drivequant.drivekit.ui.SynthesisCardsViewListener
+import com.drivequant.drivekit.ui.synthesiscards.LastTripsSynthesisCard
+import com.drivequant.drivekit.ui.synthesiscards.fragment.DKSynthesisCardViewPagerFragment
+
+internal class DashboardViewModel: ViewModel() {
+    var sdkStateObserver: MutableLiveData<Any> = MutableLiveData()
+    var sdkStateChangeListener: TripListenerController.SdkStateChangeListener = object : TripListenerController.SdkStateChangeListener {
+        override fun sdkStateChanged(state: State) {
+            sdkStateObserver.postValue(Any())
+        }
+    }
+
+    init {
+        TripListenerController.addSdkStateChangeListener(sdkStateChangeListener)
+    }
+
+    fun getSynthesisCardsView(listener: SynthesisCardsViewListener) {
+        DriverDataUI.getLastTripsSynthesisCardsView(
+            listOf(
+                LastTripsSynthesisCard.SAFETY,
+                LastTripsSynthesisCard.ECO_DRIVING,
+                LastTripsSynthesisCard.DISTRACTION,
+                LastTripsSynthesisCard.SPEEDING
+            ),
+            listener = object : SynthesisCardsViewListener {
+                override fun onViewLoaded(fragment: DKSynthesisCardViewPagerFragment) {
+                    listener.onViewLoaded(fragment)
+                }
+            })
+    }
+
+    fun getLastTripsCardsView() = DriverDataUI.getLastTripsView(HeaderDay.DISTANCE)
+
+    fun getFeatureCardTitleResId() = FeatureType.ALL.getTitleResId()
+
+    fun getFeatureCardDescriptionResId() = FeatureType.ALL.getDescriptionResId()
+
+    fun getFeatureCardTextButtonButtonResId() = FeatureType.ALL.getActionButtonTitleResId()
+
+    fun startStopTrip() {
+        if (DriveKitTripAnalysis.isTripRunning()) {
+            DriveKitTripAnalysis.stopTrip()
+        } else {
+            DriveKitTripAnalysis.startTrip()
+        }
+    }
+
+    fun getStartStopTripButtonTitleResId() = if (DriveKitTripAnalysis.isTripRunning()) {
+        R.string.stop_trip
+    } else {
+        R.string.start_trip
+    }
+}                                                                     
